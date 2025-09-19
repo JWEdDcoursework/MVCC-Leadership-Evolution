@@ -1,1 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohawk Valley Community College: Leadership Evolution 1946-2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .timeline-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .timeline-header {
+            background: linear-gradient(90deg, #4a5568, #2d3748);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .timeline-years {
+            display: flex;
+            overflow-x: auto;
+            background: #f7fafc;
+            padding: 15px;
+            border-bottom: 3px solid #e2e8f0;
+        }
+
+        .year-button {
+            background: white;
+            border: 2px solid #cbd5e0;
+            border-radius: 25px;
+            padding: 12px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .year-button:hover {
+            background: #edf2f7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .year-button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .content-area {
+            padding: 30px;
+            min-height: 600px;
+        }
+
+        .year-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .year-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .institution-card {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+            border-left: 5px solid #667eea;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .institution-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .detail-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+
+        .detail-content {
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        .admin-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .admin-list li {
+            background: #f7fafc;
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .references {
+            background: #2d3748;
+            color: white;
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 10px;
+        }
+
+        .references h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #e2e8f0;
+        }
+
+        .reference-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            text-indent: -20px;
+            line-height: 1.6;
+            color: #cbd5e0;
+        }
+
+        .comparison-mode {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .comparison-button {
+            background: #38a169;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-button:hover {
+            background: #2f855a;
+            transform: translateY(-1px);
+        }
+
+        .era-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .era-founding { background: #ffd6cc; color: #c53030; }
+        .era-technical { background: #bee3f8; color: #2b6cb0; }
+        .era-community { background: #c6f6d5; color: #2f855a; }
+        .era-modern { background: #e9d8fd; color: #6b46c1; }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .detail-grid { grid-template-columns: 1fr; }
+            .container { padding: 10px; }
+            .content-area { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mohawk Valley Community College</h1>
+            <p>Leadership Evolution Timeline: 1946-2025</p>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <h2>Explore 79 Years of Institutional Growth and Leadership</h2>
+            </div>
+
+            <div class="timeline-years" id="timelineYears">
+                <!-- Year buttons will be populated by JavaScript -->
+            </div>
+
+            <div class="content-area" id="contentArea">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="references">
+            <h3>References</h3>
+            <div class="reference-item">
+                Mohawk Valley Community College. (n.d.). History of MVCC. <em>About MVCC</em>. <a href="https://www.mvcc.edu/about/history.php" target="_blank" style="color: #81c4e8; text-decoration: underline;">https://www.mvcc.edu/about/history.php</a>
+            </div>
+            <div class="reference-item">
+                Mohawk Valley Community College Libraries. (1950). <em>The Ivy 1950</em>. NY Heritage Digital Collections. <a href="https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/5342/rec/1" target="_blank" style="color: #81c4e8; text-decoration: underline;">https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/5342/rec/1</a>
+            </div>
+            <div class="reference-item">
+                Mohawk Valley Community College Libraries. (1954). <em>The Ivy 1954</em>. NY Heritage Digital Collections. <a href="https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/950/rec/5" target="_blank" style="color: #81c4e8; text-decoration: underline;">https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/950/rec/5</a>
+            </div>
+            <div class="reference-item">
+                Mohawk Valley Community College Libraries. (1961). <em>The Ivy 1961</em>. NY Heritage Digital Collections. <a href="https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/2398/rec/12" target="_blank" style="color: #81c4e8; text-decoration: underline;">https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/2398/rec/12</a>
+            </div>
+            <div class="reference-item">
+                Mohawk Valley Community College Libraries. (1964). <em>The Ivy 1964</em>. NY Heritage Digital Collections. <a href="https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/4931/rec/15" target="_blank" style="color: #81c4e8; text-decoration: underline;">https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/4931/rec/15</a>
+            </div>
+            <div class="reference-item">
+                Mohawk Valley Community College Libraries. (1969). <em>The Ivy 1969</em>. NY Heritage Digital Collections. <a href="https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/3741/rec/20" target="_blank" style="color: #81c4e8; text-decoration: underline;">https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/3741/rec/20</a>
+            </div>
+            <div class="reference-item">
+                Mohawk Valley Community College Libraries. (1975). <em>The Ivy 1975</em>. NY Heritage Digital Collections. <a href="https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/153/rec/26" target="_blank" style="color: #81c4e8; text-decoration: underline;">https://nyheritage.contentdm.oclc.org/digital/collection/p16694coll127/id/153/rec/26</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const timelineData = {
+            1946: {
+                era: "founding",
+                name: "New York State Institute of Applied Arts & Sciences, Utica",
+                location: "New Hartford, NY",
+                external: "New York State",
+                internal: "Unknown",
+                leader: "Director Paul B. Richardson",
+                admin: ["Unknown administrative structure"]
+            },
+            1948: {
+                era: "founding",
+                name: "New York State Institute of Applied Arts & Sciences, Utica",
+                location: "New Hartford and former Utica Steam Cotton Mill",
+                external: "New York State",
+                internal: "Unknown",
+                leader: "Director Paul B. Richardson",
+                admin: ["Unknown administrative structure"]
+            },
+            1950: {
+                era: "founding",
+                name: "State University of Applied Arts & Sciences at Utica",
+                location: "New Hartford and former Utica Steam Cotton Mill",
+                external: "State University of New York (SUNY)",
+                internal: "Unknown",
+                leader: "Director Paul B. Richardson",
+                admin: [
+                    "Registrar",
+                    "Financial Secretary",
+                    "Head of General Education and Placement Division",
+                    "Head of the Retail Business Management Division",
+                    "Head of the Technical and Industrial Division"
+                ]
+            },
+            1953: {
+                era: "technical",
+                name: "Mohawk Valley Technical Institute",
+                location: "New Hartford and former Utica Steam Cotton Mill",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees (3 Utica, 2 New Hartford, 1 Rome, 1 Albany)",
+                leader: "President Dr. Albert Payne",
+                admin: [
+                    "Registrar",
+                    "Finance Officer",
+                    "Head of Retail Division",
+                    "Head of Placement and Extension Division",
+                    "Head of General Education Division",
+                    "Dean of Women"
+                ]
+            },
+            1960: {
+                era: "technical",
+                name: "Mohawk Valley Technical Institute",
+                location: "Main Utica Campus, Sherman Drive",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees (8 members)",
+                leader: "President Dr. Albert Payne",
+                admin: [
+                    "Dean of Instruction",
+                    "Associate Dean of Student Personnel Services (2)",
+                    "Leader, Public Relations",
+                    "Director of Admissions",
+                    "Coordinator, Cooperative Work Program",
+                    "Nurse",
+                    "Financial Secretary"
+                ]
+            },
+            1963: {
+                era: "community",
+                name: "Mohawk Valley Community College",
+                location: "Main Utica Campus, Sherman Drive",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees (9 members)",
+                leader: "President Dr. Albert Payne",
+                admin: [
+                    "Dean of Instruction",
+                    "Dean of Students",
+                    "Associate Dean of Administration",
+                    "Director of Admissions",
+                    "Director of Finance",
+                    "Associate Dean of Student Personnel Services",
+                    "Director of Student Activities",
+                    "Counselor",
+                    "Director of Student Housing",
+                    "College Nurse",
+                    "Director of Public Relations",
+                    "Co-Op Director",
+                    "Admissions Counselor",
+                    "Assistant Co-Op Director",
+                    "Director of Evening and Extension Division",
+                    "Assistant Director of Evening and Extension Division"
+                ]
+            },
+            1968: {
+                era: "community",
+                name: "Mohawk Valley Community College",
+                location: "Main Utica Campus, Sherman Drive",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees",
+                leader: "President Dr. W. Stewart Tosh",
+                admin: [
+                    "Dean of Instruction",
+                    "Associate Dean of Instruction",
+                    "Assistant to the Dean of Instruction",
+                    "Registrar",
+                    "Assistant Registrar",
+                    "Director of Public Information",
+                    "Bursar",
+                    "Co-Ordinator of Physical Facilities",
+                    "Director of Continuing Education",
+                    "Associate Director of Continuing Education",
+                    "Assistant Director of Continuing Education",
+                    "Director of Admissions",
+                    "Assistant Director of Admissions",
+                    "Assistant to Director of Admissions",
+                    "Director of Cooperative & Career Placement",
+                    "Co-Ordinator of Cooperative Education (2)",
+                    "Assistant to Director of Cooperative Education",
+                    "Director of Counseling Services",
+                    "Counselor (6)",
+                    "College Nurse (2)",
+                    "Director of Residence Halls",
+                    "Women's Residence Housemother",
+                    "Director of Off-Campus Housing",
+                    "Associate Dean, Student Personnel Services",
+                    "Director, Student Financial Aid",
+                    "Director, Student Activities",
+                    "Program Assistant, Student Activities"
+                ]
+            },
+            1974: {
+                era: "community",
+                name: "Mohawk Valley Community College",
+                location: "Main Utica Campus, Sherman Drive",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees",
+                leader: "President Dr. George Robertson",
+                admin: ["Administrative structure data not available for this year"]
+            },
+            1983: {
+                era: "community",
+                name: "Mohawk Valley Community College",
+                location: "Main Utica Campus, Sherman Drive",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees",
+                leader: "President Dr. Michael Schafer",
+                admin: ["Administrative structure data not available for this year"]
+            },
+            2007: {
+                era: "modern",
+                name: "Mohawk Valley Community College",
+                location: "Main Utica Campus, Sherman Drive",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees",
+                leader: "President Dr. Randall VanWagoner",
+                admin: ["Administrative structure data not available for this year"]
+            },
+            2025: {
+                era: "modern",
+                name: "Mohawk Valley Community College",
+                location: "Main Utica Campus, Sherman Drive",
+                external: "SUNY and Oneida County",
+                internal: "Board of Trustees",
+                leader: "President Dr. Randall VanWagoner",
+                admin: [
+                    "Vice President, Learning & Academic Affairs",
+                    "Vice President, Student Affairs",
+                    "Vice President, Administrative Affairs",
+                    "Assistant Vice President, Learning & Academic Affairs (3)",
+                    "Executive Director of Equity and Inclusion",
+                    "Executive Director of Organizational Culture and Wellness",
+                    "Executive Director of Human Resources",
+                    "Associate Director of Human Resources (2)",
+                    "Executive Director of Institutional Advancement & The MVCC Foundation",
+                    "Director of Development",
+                    "Small Business Center Regional Director",
+                    "Executive Director of Marketing & Communications",
+                    "Director of LAA Special Projects",
+                    "Director, College Libraries",
+                    "Executive Dean of Community and Workforce Development",
+                    "Registrar",
+                    "Dean of Athletics and Recreation",
+                    "Dean of Curriculum and Academic Scheduling",
+                    "Manager of Educational Technologies",
+                    "Dean, School of Art",
+                    "Dean, School of Humanities",
+                    "Dean, School of Hospitality and Business",
+                    "Dean, School of Health Sciences",
+                    "Dean, School of Public & Human Services",
+                    "Dean, STEM-Career",
+                    "Dean, School of STEM-Transfer",
+                    "Assistant Dean of the School of STEM and Director of the Learning Commons",
+                    "Director of the Center for Accelerated Pathways",
+                    "Director of Compliance",
+                    "Executive Director of Information Technology",
+                    "Dean of Institutional Research and Organizational Performance",
+                    "Controller",
+                    "Assistant Controller (2)",
+                    "Director, Facilities and Operations",
+                    "Executive Director for Public Safety & Emergency Management",
+                    "Dean of the Rome Campus & Community Outreach",
+                    "Dean, Student Enrollment and Development",
+                    "Director of Admissions",
+                    "Assistant Director of Admissions",
+                    "Director of Financial Aid",
+                    "Assistant Director of Financial Aid",
+                    "Director of Holistic Student Support (2)",
+                    "Coordinator of Career Services",
+                    "Director of Student Accessibility & Wellness",
+                    "Director of Pre-Employment Transition Services",
+                    "Dean of Student Life",
+                    "Coordinator of Student Engagement",
+                    "Coordinator of Judicial Affairs & Community Standards",
+                    "Supervisor of Residence Hall Facilities",
+                    "Director of Opportunity Programs",
+                    "Director, College Pipeline Programs"
+                ]
+            }
+        };
+
+        const eraNames = {
+            founding: "Founding Era",
+            technical: "Technical Institute Era", 
+            community: "Community College Era",
+            modern: "Modern Era"
+        };
+
+        function initializeTimeline() {
+            const yearsContainer = document.getElementById('timelineYears');
+            const contentArea = document.getElementById('contentArea');
+            
+            // Create year buttons
+            Object.keys(timelineData).forEach((year, index) => {
+                const button = document.createElement('button');
+                button.className = 'year-button';
+                button.textContent = year;
+                button.onclick = () => showYear(year);
+                yearsContainer.appendChild(button);
+            });
+
+            // Show first year by default
+            showYear('1946');
+        }
+
+        function showYear(selectedYear) {
+            // Update active button
+            document.querySelectorAll('.year-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === selectedYear) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update content
+            const data = timelineData[selectedYear];
+            const contentArea = document.getElementById('contentArea');
+            
+            contentArea.innerHTML = `
+                <div class="year-content active">
+                    <div class="institution-card">
+                        <div class="era-indicator era-${data.era}">
+                            ${eraNames[data.era]} (${selectedYear})
+                        </div>
+                        <div class="institution-name">${data.name}</div>
+                        
+                        <div class="detail-grid">
+                            <div class="detail-card">
+                                <div class="detail-title">📍 Location</div>
+                                <div class="detail-content">${data.location}</div>
+                            </div>
+                            
+                            <div class="detail-card">
+                                <div class="detail-title">🏛️ External Oversight</div>
+                                <div class="detail-content">${data.external}</div>
+                            </div>
+                            
+                            <div class="detail-card">
+                                <div class="detail-title">👥 Internal Governance</div>
+                                <div class="detail-content">${data.internal}</div>
+                            </div>
+                            
+                            <div class="detail-card">
+                                <div class="detail-title">👨‍💼 Executive Leadership</div>
+                                <div class="detail-content">${data.leader}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card" style="margin-top: 20px;">
+                            <div class="detail-title">🏢 Administrative Structure (${data.admin.length} positions)</div>
+                            <div class="detail-content">
+                                <ul class="admin-list">
+                                    ${data.admin.map(role => `<li>${role}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initializeTimeline);
+    </script>
+</body>
+</html>
